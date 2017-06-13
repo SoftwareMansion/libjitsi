@@ -3775,7 +3775,8 @@ public class MediaStreamImpl
         }
 
         final byte vp8PT = getDynamicRTPPayloadType(Constants.VP8),
-            vp9PT = getDynamicRTPPayloadType(Constants.VP9);
+            vp9PT = getDynamicRTPPayloadType(Constants.VP9),
+            h264PT = getDynamicRTPPayloadType(Constants.H264);
 
         if (redBlock.getPayloadType() == vp8PT)
         {
@@ -3787,6 +3788,13 @@ public class MediaStreamImpl
         {
             return org.jitsi.impl
                 .neomedia.codec.video.vp9.DePacketizer.VP9PayloadDescriptor
+                .isStartOfFrame(redBlock.getBuffer(),
+                    redBlock.getOffset(), redBlock.getLength());
+        }
+        else if (redBlock.getPayloadType() == h264PT)
+        {
+            return org.jitsi.impl
+                .neomedia.codec.video.h264.DePacketizer.H264PayloadDescriptor
                 .isStartOfFrame(redBlock.getBuffer(),
                     redBlock.getOffset(), redBlock.getLength());
         }

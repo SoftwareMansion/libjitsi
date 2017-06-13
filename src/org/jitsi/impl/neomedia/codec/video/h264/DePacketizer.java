@@ -873,4 +873,26 @@ public class DePacketizer
             notifyAll();
         }
     }
+    public static class H264PayloadDescriptor
+    {
+        public static boolean isStartOfFrame(byte[] buf, int off, int len)
+        {
+            int nalType = buf[off] & kTypeMask;
+            if (nalType == kFuA)
+            {
+                boolean isFirstFuAFrame = (buf[off + 1] & 0x80) != 0;
+                return isValid(buf, off, len) && isFirstFuAFrame;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private static boolean isValid(byte[] buf, int off, int len)
+        {
+            return
+                (buf != null && buf.length >= off + len && off > -1 && len > 0);
+        }
+    }
 }
